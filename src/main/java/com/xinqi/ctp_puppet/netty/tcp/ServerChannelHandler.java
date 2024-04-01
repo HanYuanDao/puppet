@@ -52,9 +52,9 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		Channel channel = ctx.channel();
 		log.info("有客户端连接 channel ID is : {}", channel.id());
+		TradeTcpServerFactory.addClientChannel(channel);
 		this.notifyShookHand(channel);
 		TradeTcpServerFactory.notifyRtnHistory(channel);
-		TradeTcpServerFactory.addClientChannel(channel);
 	}
 
 	@Override

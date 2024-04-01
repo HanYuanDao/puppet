@@ -269,7 +269,7 @@ public class RtnOrderRespVO extends CTPRespVOBase {
 
 	@Override
 	public ByteBuf toByteBuf() {
-		ByteBuf buf = Unpooled.buffer(647);
+		ByteBuf buf = Unpooled.buffer(726);
 		buf.writeBytes(DecodeUtils.getCByteArr(brokerID, 11));
 		buf.writeBytes(DecodeUtils.getCByteArr(investorID, 13));
 		buf.writeBytes(DecodeUtils.getCByteArr(instrumentID, 31));
@@ -320,7 +320,7 @@ public class RtnOrderRespVO extends CTPRespVOBase {
 		buf.writeBytes(DecodeUtils.intToLeByteArr(frontID));
 		buf.writeBytes(DecodeUtils.intToLeByteArr(sessionID));
 		buf.writeBytes(DecodeUtils.getCByteArr(userProductInfo, 11));
-		buf.writeBytes(DecodeUtils.getCByteArr(statusMsg, 81));
+		buf.writeBytes(DecodeUtils.getCByteArr(statusMsg, 162));
 		buf.writeBytes(DecodeUtils.intToLeByteArr(userForceClose));
 		buf.writeBytes(DecodeUtils.getCByteArr(activeUserID, 16));
 		buf.writeBytes(DecodeUtils.intToLeByteArr(brokerOrderSeq));

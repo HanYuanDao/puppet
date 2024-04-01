@@ -28,7 +28,7 @@ public class RespInfoVO extends CTPRespVOBase {
 	public ByteBuf toByteBuf() {
 		ByteBuf buf = Unpooled.buffer(85);
 		buf.writeBytes(DecodeUtils.intToLeByteArr(errorID));
-		buf.writeBytes(DecodeUtils.getCByteArr(errorMsg, 81));
+		buf.writeBytes(DecodeUtils.getCByteArr(errorMsg, 162));
 		return buf;
 	}
 
