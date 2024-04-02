@@ -19,7 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Getter
 public class CTPMsgHandlerTask implements Runnable {
-//public class CTPMsgHandlerTask implements Runnable, Comparator {
+
+	private static final Integer NUM_MESSAGE_TRY = 3;
 
 	private long handleTime;
 	private CTPOnFuncMsgHandleEnum ctpOnFuncMsgHandleEnum;
@@ -66,14 +67,31 @@ public class CTPMsgHandlerTask implements Runnable {
 	}
 
 	private void sendMessage(ByteBuf byteBuf) {
-		if (null != channel) {
+		/**
+		 * 当傀儡机向外发送消息时，有可能出现io异常，此时添加一个重试次数为{@link NUM_MESSAGE_TRY}的重试机制
+		 */
+		int messageTryNum = NUM_MESSAGE_TRY;
+		while (messageTryNum > 0) {
 			try {
-				channel.writeAndFlush(byteBuf);
+				if (null != channel) {
+					channel.writeAndFlush(byteBuf);
+				} else {
+					TradeTcpServerFactory.sendMessage(byteBuf);
+				}
+				messageTryNum = 0;
 			} catch (Exception e) {
-				log.error("服务端往单一客户端发送消息失败。", e);
+				messageTryNum--;
+				if (null != channel) {
+					log.error("服务端往单一客户端发送消息失败。", e);
+				} else {
+					log.error("服务端往多个客户端发送消息失败。", e);
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException ex) {
+					log.error("", e);
+				}
 			}
-		} else {
-			TradeTcpServerFactory.sendMessage(byteBuf);
 		}
 
 		Gson gson = new Gson();
