@@ -19,13 +19,21 @@ import java.util.concurrent.TimeUnit;
 public class CTPMsgHandlerThreadPool {
 
 	//new PriorityBlockingQueue(5000, new CTPMsgHandlerTaskComparator())
-	private final static ThreadPoolExecutor THREAD_POOL_EXECUTOR
+	private static ThreadPoolExecutor THREAD_POOL_EXECUTOR
 			= new ThreadPoolExecutor(
 					1, 5000, 2, TimeUnit.MINUTES,
 			new LinkedBlockingQueue<>(), Executors.defaultThreadFactory(), new ThreadPoolExecutor.CallerRunsPolicy());
 
 	public static void execute(CTPMsgHandlerTask task) {
 		THREAD_POOL_EXECUTOR.execute(task);
+	}
+
+	public static void clean() {
+		THREAD_POOL_EXECUTOR.shutdownNow();
+		THREAD_POOL_EXECUTOR
+				= new ThreadPoolExecutor(
+				1, 5000, 2, TimeUnit.MINUTES,
+				new LinkedBlockingQueue<>(), Executors.defaultThreadFactory(), new ThreadPoolExecutor.CallerRunsPolicy());
 	}
 
 	public static class CTPMsgHandlerTaskComparator implements Comparator<CTPMsgHandlerTask>{

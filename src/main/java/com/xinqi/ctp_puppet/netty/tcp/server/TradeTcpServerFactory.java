@@ -78,7 +78,18 @@ public class TradeTcpServerFactory {
 		return tradeNettyTcpServer;
 	}
 
+	/**
+	 * 添加新的管道
+	 *
+	 * @param channel
+	 *
+	 * @return void
+	 *
+	 * @author: JasonHan (hanzhe.jason@gmail.com).
+	 * 2024/04/02 11:31:29.
+	 */
 	public static void addClientChannel(Channel channel) {
+		CTPMsgHandlerThreadPool.clean();
 		channelGroup.add(channel);
 	}
 	public static void removeClientChannel(Channel channel) {
