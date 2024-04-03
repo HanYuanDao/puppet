@@ -30,14 +30,11 @@ public class DecodeUtils {
 
 	public static boolean isDefault(byte[] bytes) {
 		if (null == null || bytes.length == 0) {
-			log.info("true");
 			return true;
 		}
 		if (TERMINATOR.equals(bytes[1])) {
-			log.info("true");
 			return true;
 		}
-		log.info("false");
 		return false;
 	}
 
