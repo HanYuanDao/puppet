@@ -159,7 +159,7 @@ public class InputOrderReqVO extends CTPReqVOBase {
 		for (int i = 0; i < byteArr.length; i++) {
 			byteArr[i] = source[offset + i];
 		}
-		this.orderRef = DecodeUtils.getCString(byteArr);
+		//this.orderRef = DecodeUtils.getCString(byteArr);
 		offset += byteArr.length;
 		byteArr = new byte[16];
 		for (int i = 0; i < byteArr.length; i++) {

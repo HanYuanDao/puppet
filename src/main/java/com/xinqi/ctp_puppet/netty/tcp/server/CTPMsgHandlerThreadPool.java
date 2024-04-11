@@ -42,7 +42,7 @@ public class CTPMsgHandlerThreadPool {
 			if (task1.getHandleTime() == task2.getHandleTime()) {
 				return 0;
 			}
-			return task1.getHandleTime() < task2.getHandleTime() ? -1 : 1;
+			return task1.getHandleTime() < task2.getHandleTime() ? 1 : -1;
 		}
 	}
 }
