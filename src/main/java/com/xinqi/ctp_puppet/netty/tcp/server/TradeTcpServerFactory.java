@@ -89,19 +89,38 @@ public class TradeTcpServerFactory {
 	 * 2024/04/02 11:31:29.
 	 */
 	public static void addClientChannel(Channel channel) {
+		/**
+		 * 清空消息队列
+		 */
 		CTPMsgHandlerThreadPool.clean();
+
+		/**
+		 * 新连接上来之后关闭之前的管道
+		 */
+		//for (Channel c : channelGroup) {
+		//	c.close();
+		//}
+		channelGroup.close();
+
 		channelGroup.add(channel);
 	}
 	public static void removeClientChannel(Channel channel) {
 		channelGroup.remove(channel);
 	}
 	public static void sendMessage(ByteBuf byteBuf) {
-		for (Channel channel : channelGroup) {
-			try {
-				channel.writeAndFlush(byteBuf);
-			} catch (Exception e) {
-				log.error("服务端往客户端发送消息失败。", e);
-			}
+		//for (Channel channel : channelGroup) {
+		//	try {
+		//		channel.writeAndFlush(byteBuf);
+		//		log.info("发送消息给{}, 消息长度为{}", channel.id(), byteBuf.readableBytes());
+		//	} catch (Exception e) {
+		//		log.error("服务端往客户端发送消息失败。", e);
+		//	}
+		//}
+
+		try {
+			channelGroup.writeAndFlush(byteBuf);
+		} catch (Exception e) {
+			log.error("服务端往客户端发送消息失败。", e);
 		}
 	}
 
