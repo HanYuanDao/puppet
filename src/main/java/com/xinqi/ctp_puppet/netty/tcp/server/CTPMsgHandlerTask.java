@@ -94,13 +94,18 @@ public class CTPMsgHandlerTask implements Runnable {
 			}
 		}
 
-		Gson gson = new Gson();
-		log.info(gson.toJson(ctpOnFuncMsgHandleEnum));
-		log.info(gson.toJson(obj));
-		log.info(gson.toJson(pRspInfo));
-		log.info(gson.toJson(nRequestID));
-		log.info(gson.toJson(bIsLast));
-		log.info("消息长度：" + byteBuf.readableBytes());
+		if (!CTPOnFuncMsgHandleEnum.QRY_TRADING_ACCOUNT.equals(ctpOnFuncMsgHandleEnum)) {
+			Gson gson = new Gson();
+			log.info(gson.toJson(ctpOnFuncMsgHandleEnum));
+			log.info(gson.toJson(obj));
+		}
+		//Gson gson = new Gson();
+		//log.info(gson.toJson(ctpOnFuncMsgHandleEnum));
+		//log.info(gson.toJson(obj));
+		//log.info(gson.toJson(pRspInfo));
+		//log.info(gson.toJson(nRequestID));
+		//log.info(gson.toJson(bIsLast));
+		//log.info("消息长度：" + byteBuf.readableBytes());
 	}
 
 }

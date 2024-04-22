@@ -108,17 +108,17 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 		//in.readBytes(source);
 		byte[] source = (byte[]) msg;
 
-		try {
-			log.info(bytesToHex(source));
-		} catch (Exception e) {
+		//try {
+		//	log.info(bytesToHex(source));
+		//} catch (Exception e) {
+		//
+		//}
 
-		}
-
-		byte[] tmp = new byte[source.length];
-		for (int i = 0; i < source.length; i++) {
-			tmp[i] = (byte) Integer.valueOf(source[i]).intValue();
-		}
-		log.info(Arrays.toString(tmp));
+		//byte[] tmp = new byte[source.length];
+		//for (int i = 0; i < source.length; i++) {
+		//	tmp[i] = (byte) Integer.valueOf(source[i]).intValue();
+		//}
+		//log.info(Arrays.toString(tmp));
 
 		/**
 		 * 校验加密头
@@ -176,7 +176,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 	 * 2024/01/08 10:32:26.
 	 */
 	public boolean checkHead(long head) {
-		log.info("收到的加密字符为" + head);
+		//log.info("收到的加密字符为" + head);
 		return TradeTcpServerFactory.getTradeNettyTcpServer().checkoutEncryptKey(head);
 	}
 
@@ -221,7 +221,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 			case 50:
 				QryTradingAccountReqVO qryTradingAccountReqVO = new QryTradingAccountReqVO();
 				qryTradingAccountReqVO.toJavaBean(msgPayload);
-				log.info(GSON.toJson(qryTradingAccountReqVO));
+				//log.info(GSON.toJson(qryTradingAccountReqVO));
 				TradeTcpServerFactory.handler(qryTradingAccountReqVO);
 				break;
 			case 57:
