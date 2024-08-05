@@ -269,6 +269,23 @@ public enum CTPOnFuncMsgHandleEnum {
 
 		}
 	},
+	QRY_TRADE(65) {
+		@Override
+		public ByteBuf handle(CTPRespVOBase obj, RespInfoVO respInfoVO, Integer nRequestID, Boolean bIsLast) {
+			ByteBuf output = Unpooled.buffer(427);
+			RtnTradeRespVO rtnTradeRespVO = (RtnTradeRespVO) obj;
+			output.writeBytes(rtnTradeRespVO.toByteBuf());
+			output.writeBytes(respInfoVO.toByteBuf());
+			output.writeBytes(DecodeUtils.intToLeByteArr(nRequestID));
+			output.writeBytes(DecodeUtils.booleanToByteArr(bIsLast));
+			return output;
+		}
+
+		@Override
+		public void postHandle(CTPRespVOBase voBase) {
+
+		}
+	},
 	;
 
 	private final static String FLAG_SHOOK_HAND = "CTPPuppetShookHandSuccess";

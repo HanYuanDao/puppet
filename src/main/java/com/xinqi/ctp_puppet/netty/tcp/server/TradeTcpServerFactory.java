@@ -11,6 +11,7 @@ import com.xinqi.ctp_puppet.netty.tcp.vo.QryInstrumentCommissionRateReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QryInvestorPositionDetailReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QrySettlementInfoConfirmReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QrySettlementInfoReqVO;
+import com.xinqi.ctp_puppet.netty.tcp.vo.QryTradeReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QryTradingAccountReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.RtnOrderRespVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.SettlementInfoConfirmReqVO;
@@ -165,6 +166,9 @@ public class TradeTcpServerFactory {
 	}
 	public static void handler(QryInvestorPositionDetailReqVO qryInvestorPositionDetailReqVO) {
 		tradeNettyTcpServer.qryInvestorPositionDetail(qryInvestorPositionDetailReqVO);
+	}
+	public static void handler(QryTradeReqVO qryTradeReqVO) {
+		tradeNettyTcpServer.qryTrade(qryTradeReqVO);
 	}
 
 	public static void start(CTPUserInfoVO faVO) {

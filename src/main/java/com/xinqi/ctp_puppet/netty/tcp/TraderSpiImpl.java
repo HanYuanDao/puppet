@@ -31,6 +31,7 @@ import ctp.thosttraderapi.CThostFtdcQryInstrumentCommissionRateField;
 import ctp.thosttraderapi.CThostFtdcQryInvestorPositionDetailField;
 import ctp.thosttraderapi.CThostFtdcQrySettlementInfoConfirmField;
 import ctp.thosttraderapi.CThostFtdcQrySettlementInfoField;
+import ctp.thosttraderapi.CThostFtdcQryTradeField;
 import ctp.thosttraderapi.CThostFtdcQryTradingAccountField;
 import ctp.thosttraderapi.CThostFtdcReqAuthenticateField;
 import ctp.thosttraderapi.CThostFtdcReqUserLoginField;
@@ -822,11 +823,65 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 			log.info(GSON.toJson(isLast));
 			ctpMsgHandlerTask.loading(
 					CTPOnFuncMsgHandleEnum.QRY_SETTLEMENT_INFO_CONFIRM, qrySettlementInfoRespVO, respInfoVO, requestId, isLast);
-			log.info("2");
 			CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
-			log.info("1");
 		} catch (Exception e) {
 			log.error("", e);
+		}
+	}
+
+	@Override
+	public void OnRspQryTrade(CThostFtdcTradeField pRtnTrade, CThostFtdcRspInfoField var2, int nRequestID, boolean bIsLast) {
+		try {
+			log.info("OnRspQryTrade");
+			log.info(GSON.toJson(pRtnTrade));
+			log.info(GSON.toJson(var2));
+			log.info(GSON.toJson(nRequestID));
+			log.info(GSON.toJson(bIsLast));
+			CTPMsgHandlerTask ctpMsgHandlerTask = new CTPMsgHandlerTask();
+			RtnTradeRespVO rtnTradeRespVO = new RtnTradeRespVO();
+			if (null != pRtnTrade) {
+				rtnTradeRespVO.setBrokerID(pRtnTrade.getBrokerID());
+				rtnTradeRespVO.setInvestorID(pRtnTrade.getInvestorID());
+				rtnTradeRespVO.setInstrumentID(pRtnTrade.getInstrumentID());
+				rtnTradeRespVO.setOrderRef(pRtnTrade.getOrderRef());
+				rtnTradeRespVO.setUserID(pRtnTrade.getUserID());
+				rtnTradeRespVO.setExchangeID(pRtnTrade.getExchangeID());
+				rtnTradeRespVO.setTradeID(pRtnTrade.getTradeID());
+				rtnTradeRespVO.setDirection(pRtnTrade.getDirection());
+				rtnTradeRespVO.setOrderSysID(pRtnTrade.getOrderSysID());
+				rtnTradeRespVO.setParticipantID(pRtnTrade.getParticipantID());
+				rtnTradeRespVO.setClientID(pRtnTrade.getClientID());
+				rtnTradeRespVO.setTradingRole(pRtnTrade.getTradingRole());
+				rtnTradeRespVO.setExchangeInstID(pRtnTrade.getExchangeInstID());
+				rtnTradeRespVO.setOffsetFlag(pRtnTrade.getOffsetFlag());
+				rtnTradeRespVO.setHedgeFlag(pRtnTrade.getHedgeFlag());
+				rtnTradeRespVO.setPrice(pRtnTrade.getPrice());
+				rtnTradeRespVO.setVolume(pRtnTrade.getVolume());
+				rtnTradeRespVO.setTradeDate(pRtnTrade.getTradeDate());
+				rtnTradeRespVO.setTradeTime(pRtnTrade.getTradeTime());
+				rtnTradeRespVO.setTradeType(pRtnTrade.getTradeType());
+				rtnTradeRespVO.setPriceSource(pRtnTrade.getPriceSource());
+				rtnTradeRespVO.setTraderID(pRtnTrade.getTraderID());
+				rtnTradeRespVO.setOrderLocalID(pRtnTrade.getOrderLocalID());
+				rtnTradeRespVO.setClearingPartID(pRtnTrade.getClearingPartID());
+				rtnTradeRespVO.setBusinessUnit(pRtnTrade.getBusinessUnit());
+				rtnTradeRespVO.setSequenceNo(pRtnTrade.getSequenceNo());
+				rtnTradeRespVO.setTradingDay(pRtnTrade.getTradingDay());
+				rtnTradeRespVO.setSettlementID(pRtnTrade.getSettlementID());
+				rtnTradeRespVO.setBrokerOrderSeq(pRtnTrade.getBrokerOrderSeq());
+				rtnTradeRespVO.setTradeSource(pRtnTrade.getTradeSource());
+				rtnTradeRespVO.setInvestUnitID(pRtnTrade.getInvestUnitID());
+			}
+			RespInfoVO respInfoVO = new RespInfoVO();
+			if (null != var2) {
+				respInfoVO.setErrorID(var2.getErrorID());
+				respInfoVO.setErrorMsg(var2.getErrorMsg());
+			}
+			ctpMsgHandlerTask.loading(
+					CTPOnFuncMsgHandleEnum.QRY_TRADE, rtnTradeRespVO, respInfoVO, nRequestID, bIsLast);
+			CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
+		} catch (Exception e) {
+			log.error("查询成交记录", e);
 		}
 	}
 
@@ -915,6 +970,10 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 
 	public int ReqQryInvestorPositionDetail(CThostFtdcQryInvestorPositionDetailField cThostFtdcQryInvestorPositionDetailField) {
 		return traderApi.ReqQryInvestorPositionDetail(cThostFtdcQryInvestorPositionDetailField, getRequestId());
+	}
+
+	public int ReqQryTrade(CThostFtdcQryTradeField cThostFtdcQryTradeField) {
+		return traderApi.ReqQryTrade(cThostFtdcQryTradeField, getRequestId());
 	}
 
 	private int getRequestId() {

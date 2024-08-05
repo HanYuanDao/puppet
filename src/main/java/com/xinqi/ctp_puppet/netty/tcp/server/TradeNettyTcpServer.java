@@ -12,6 +12,7 @@ import com.xinqi.ctp_puppet.netty.tcp.vo.QryInstrumentCommissionRateReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QryInvestorPositionDetailReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QrySettlementInfoConfirmReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QrySettlementInfoReqVO;
+import com.xinqi.ctp_puppet.netty.tcp.vo.QryTradeReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QryTradingAccountReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.SettlementInfoConfirmReqVO;
 import ctp.thosttraderapi.CThostFtdcInputOrderActionField;
@@ -20,6 +21,7 @@ import ctp.thosttraderapi.CThostFtdcQryInstrumentCommissionRateField;
 import ctp.thosttraderapi.CThostFtdcQryInvestorPositionDetailField;
 import ctp.thosttraderapi.CThostFtdcQrySettlementInfoConfirmField;
 import ctp.thosttraderapi.CThostFtdcQrySettlementInfoField;
+import ctp.thosttraderapi.CThostFtdcQryTradeField;
 import ctp.thosttraderapi.CThostFtdcQryTradingAccountField;
 import ctp.thosttraderapi.CThostFtdcSettlementInfoConfirmField;
 import ctp.thosttraderapi.CThostFtdcTraderApi;
@@ -335,6 +337,19 @@ public class TradeNettyTcpServer {
 		return traderSpi.ReqQryInvestorPositionDetail(cThostFtdcQryInvestorPositionDetailField);
 	}
 
+	public int qryTrade(QryTradeReqVO qryTradeReqVO) {
+		CThostFtdcQryTradeField cThostFtdcQryTradeField = new CThostFtdcQryTradeField();
+		cThostFtdcQryTradeField.setBrokerID(qryTradeReqVO.getBrokerID());
+		cThostFtdcQryTradeField.setInvestorID(qryTradeReqVO.getInvestorID());
+		cThostFtdcQryTradeField.setInstrumentID(qryTradeReqVO.getInstrumentID());
+		cThostFtdcQryTradeField.setExchangeID(qryTradeReqVO.getExchangeID());
+		cThostFtdcQryTradeField.setTradeID(qryTradeReqVO.getTradeID());
+		cThostFtdcQryTradeField.setTradeTimeStart(qryTradeReqVO.getTradeTimeStart());
+		cThostFtdcQryTradeField.setTradeTimeEnd(qryTradeReqVO.getTradeTimeEnd());
+		cThostFtdcQryTradeField.setInvestUnitID(qryTradeReqVO.getInvestUnitID());
+		return traderSpi.ReqQryTrade(cThostFtdcQryTradeField);
+	}
+	
 	public void onRtnOrder() {
 
 	}

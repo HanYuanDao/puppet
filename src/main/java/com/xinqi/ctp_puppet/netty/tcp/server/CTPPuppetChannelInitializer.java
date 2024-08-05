@@ -32,7 +32,6 @@ public class CTPPuppetChannelInitializer extends ChannelInitializer<SocketChanne
 
 	@Override
 	protected void initChannel(SocketChannel socketChannel) throws Exception {
-		log.info("1");
 		ChannelPipeline pipeline = socketChannel.pipeline();
 		//IdleStateHandler心跳机制,如果超时触发Handle中userEventTrigger()方法
 		pipeline.addLast("idleStateHandler",

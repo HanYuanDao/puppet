@@ -15,6 +15,7 @@ import com.xinqi.ctp_puppet.netty.tcp.vo.QryInvestorPositionDetailReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QryInvestorPositionDetailRespVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QrySettlementInfoConfirmReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QrySettlementInfoReqVO;
+import com.xinqi.ctp_puppet.netty.tcp.vo.QryTradeReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.QryTradingAccountReqVO;
 import com.xinqi.ctp_puppet.netty.tcp.vo.SettlementInfoConfirmReqVO;
 import io.netty.buffer.ByteBuf;
@@ -113,7 +114,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 		//} catch (Exception e) {
 		//
 		//}
-
+		//
 		//byte[] tmp = new byte[source.length];
 		//for (int i = 0; i < source.length; i++) {
 		//	tmp[i] = (byte) Integer.valueOf(source[i]).intValue();
@@ -229,6 +230,12 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 				qryInvestorPositionDetailReqVO.toJavaBean(msgPayload);
 				log.info(GSON.toJson(qryInvestorPositionDetailReqVO));
 				TradeTcpServerFactory.handler(qryInvestorPositionDetailReqVO);
+				break;
+			case 65:
+				QryTradeReqVO qryTradeReqVO = new QryTradeReqVO();
+				qryTradeReqVO.toJavaBean(msgPayload);
+				log.info(GSON.toJson(qryTradeReqVO));
+				TradeTcpServerFactory.handler(qryTradeReqVO);
 				break;
 			default:
 				log.error("异常的消息头{}", msgType);
