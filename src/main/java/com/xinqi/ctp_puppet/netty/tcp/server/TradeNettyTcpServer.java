@@ -63,6 +63,10 @@ public class TradeNettyTcpServer {
 	private EventLoopGroup workerGroup = new NioEventLoopGroup();
 
 	private TraderSpiImpl traderSpi;
+	/**
+	 * 报单引用
+	 */
+	private static int ORDER_REF;
 
 	private int port;
 
@@ -86,6 +90,12 @@ public class TradeNettyTcpServer {
 	}
 
 	protected void start(CTPUserInfoVO faVO) {
+		encryptKey = initEncryptKey();
+		log.info("加密字符为{}", encryptKey);
+
+		TradeTcpServerFactory.notifyTcpServerInfo(
+				String.valueOf(this.encryptKey), String.valueOf(this.port));
+
 		startCTP(faVO);
 
 		ServerBootstrap bootstrap = new ServerBootstrap();
@@ -118,15 +128,12 @@ public class TradeNettyTcpServer {
 		} catch (Exception e) {
 			log.error("CTP中转服务启动失败，端口号为" + port, e);
 		}
-
-		encryptKey = initEncryptKey();
-		log.info("加密字符为{}", encryptKey);
-
-		TradeTcpServerFactory.notifyTcpServerInfo(
-				String.valueOf(this.encryptKey), String.valueOf(this.port));
 	}
 	private void startCTP(CTPUserInfoVO ctpUserInfo) {
 		log.info("调用CTP");
+
+		initOrderRef();
+
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -145,6 +152,23 @@ public class TradeNettyTcpServer {
 				}
 			}
 		}).start();
+	}
+
+	/**
+	 * 每次重启CTP连接的时候都需要重制报单引用
+	 *
+	 * @param
+	 *
+	 * @return void
+	 *
+	 * @author: JasonHan (hanzhe.jason@gmail.com).
+	 * 2024/08/22 10:01:55.
+	 */
+	private static void initOrderRef() {
+		ORDER_REF = 1;
+	}
+	public static int getOrderRef() {
+		return ORDER_REF++;
 	}
 
 	/**

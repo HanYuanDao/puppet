@@ -2,6 +2,7 @@ package com.xinqi.ctp_puppet.netty.tcp.vo;
 
 
 import com.xinqi.ctp_puppet.common.DecodeUtils;
+import com.xinqi.ctp_puppet.netty.tcp.server.TradeNettyTcpServer;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 
@@ -160,6 +161,7 @@ public class InputOrderReqVO extends CTPReqVOBase {
 			byteArr[i] = source[offset + i];
 		}
 		//this.orderRef = DecodeUtils.getCString(byteArr);
+		this.orderRef = Integer.toString(TradeNettyTcpServer.getOrderRef());
 		offset += byteArr.length;
 		byteArr = new byte[16];
 		for (int i = 0; i < byteArr.length; i++) {
