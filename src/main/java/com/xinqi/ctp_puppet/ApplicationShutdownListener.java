@@ -1,7 +1,7 @@
 package com.xinqi.ctp_puppet;
 
 
-import com.xinqi.ctp_puppet.netty.tcp.server.TradeTcpServerFactory;
+import com.xinqi.ctp_puppet.netty.gateway.tcp.server.TradeTcpServerFactory;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

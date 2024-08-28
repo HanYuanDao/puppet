@@ -1,9 +1,7 @@
 package com.xinqi.ctp_puppet.ws;
 
 
-import com.xinqi.ctp_puppet.common.CTPUserInfoVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.socket.WebSocketSession;
 
 /**
  * Description: TODO

@@ -65,6 +65,15 @@
             <systemPath>${basedir}/src/main/resources/lib/ctp.thosttraderapi.0.0.1/thosttraderapi0.0.1.jar</systemPath>
         </dependency>
 
+        <!-- 调用QDP -->
+        <dependency>
+            <groupId>qdp</groupId>
+            <artifactId>qdptraderapi</artifactId>
+            <version>0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/qdp.qdptraderapi.0.0.1/qdptraderapi.0.0.1.jar</systemPath>
+        </dependency>
+
         <!-- json -->
         <dependency>
             <groupId>com.google.code.gson</groupId>

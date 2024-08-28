@@ -1,7 +1,7 @@
 package com.xinqi.ctp_puppet;
 
 
-import com.xinqi.ctp_puppet.netty.tcp.server.TradeTcpServerFactory;
+import com.xinqi.ctp_puppet.netty.gateway.tcp.server.TradeTcpServerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;;

@@ -3,15 +3,11 @@ package com.xinqi.ctp_puppet.ws;
 
 
 import com.google.gson.Gson;
-import com.xinqi.ctp_puppet.common.CTPUserInfoVO;
-import com.xinqi.ctp_puppet.netty.tcp.TraderSpiImpl;
-import com.xinqi.ctp_puppet.netty.tcp.server.TradeTcpServerFactory;
-import ctp.thosttraderapi.CThostFtdcTraderApi;
-import ctp.thosttraderapi.THOST_TE_RESUME_TYPE;
+import com.xinqi.ctp_puppet.common.UserInfoVO;
+import com.xinqi.ctp_puppet.netty.gateway.tcp.server.TradeTcpServerFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.websocket.ClientEndpoint;
-import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -38,7 +34,7 @@ public class WSClient {
 
 	private volatile boolean ctpWorking;
 	private String containerId;
-	private CTPUserInfoVO ctpUserInfoVO;
+	private UserInfoVO ctpUserInfoVO;
 
 	private WSClient ALIVE_CLIENT;
 
@@ -114,7 +110,7 @@ public class WSClient {
 	}
 
 	public void achieveFutureAccountInfo(String message) {
-		this.ctpUserInfoVO = CTPUserInfoVO.resolveJson(message);
+		this.ctpUserInfoVO = UserInfoVO.resolveJson(message);
 		TradeTcpServerFactory.start(this.ctpUserInfoVO);
 	}
 
