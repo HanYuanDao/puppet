@@ -1,6 +1,8 @@
 package com.xinqi.ctp_puppet;
 
 
+import com.xinqi.ctp_puppet.common.UserInfoVO;
+import com.xinqi.ctp_puppet.netty.gateway.qdp.QdpTraderSpiImpl;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.server.TradeTcpServerFactory;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.QryTradingAccountReqVO;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +49,33 @@ public class CtpPuppetApplication {
 
 		InetAddress localHost = InetAddress.getLocalHost();
 		TradeTcpServerFactory.initWSClient(localHost.getHostName());
+		log.info("创建ws客户端");
+
+		//TODO JasonHan 触发qdp连接
+		UserInfoVO faVO = new UserInfoVO(
+				"tcp://140.207.230.90:20000", "guofu",
+				"01020458","026429",
+				"client_wxn_1.0","563d3da1757995e0c424a35ae6e02d00");
+		TradeTcpServerFactory.start(faVO);
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					while (true) {
+						Thread.sleep(10 * 1000);
+
+						log.info("查询期货账号信息");
+						QryTradingAccountReqVO qryTradingAccountReqVO = new QryTradingAccountReqVO();
+						qryTradingAccountReqVO.setBrokerID(faVO.getBrokerId());
+						qryTradingAccountReqVO.setInvestorID(faVO.getInvestorId());
+						TradeTcpServerFactory.handler(qryTradingAccountReqVO);
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 
 	public static void getLocalHostInfo() {
