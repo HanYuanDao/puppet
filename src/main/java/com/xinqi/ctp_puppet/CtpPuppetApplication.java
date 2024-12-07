@@ -2,12 +2,15 @@ package com.xinqi.ctp_puppet;
 
 
 import com.xinqi.ctp_puppet.netty.gateway.tcp.server.TradeTcpServerFactory;
+import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.QryTradingAccountReqVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import qdp.qdptraderapi.CQdpFtdcTraderApi;
+import qdp.qdptraderapi.QDP_TE_RESUME_TYPE;
 
 import javax.websocket.DeploymentException;
 import java.io.IOException;
@@ -27,7 +30,7 @@ import java.util.List;
 public class CtpPuppetApplication {
 
 	public static void main(String[] args) throws IOException, DeploymentException {
-		int port = 8089;
+		int port = 18089;
 		SpringApplication app = new SpringApplication(CtpPuppetApplication.class);
 		app.setDefaultProperties(Collections
 				.singletonMap("server.port", port));
@@ -36,6 +39,9 @@ public class CtpPuppetApplication {
 
 		// 打印硬件信息
 		getLocalHostInfo();
+
+		//String libraryPath = System.getProperty("java.library.path");
+		//log.info("Java Library Path: " + libraryPath);
 
 		TradeTcpServerFactory.initTradeTcpServer();
 

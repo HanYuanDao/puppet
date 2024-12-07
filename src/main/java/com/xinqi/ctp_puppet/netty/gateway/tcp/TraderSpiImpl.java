@@ -20,31 +20,6 @@ import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.RespInfoVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.RtnOrderRespVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.RtnTradeRespVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.SettlementInfoConfirmRespVO;
-import ctp.thosttraderapi.CThostFtdcInputOrderActionField;
-import ctp.thosttraderapi.CThostFtdcInputOrderField;
-import ctp.thosttraderapi.CThostFtdcInstrumentCommissionRateField;
-import ctp.thosttraderapi.CThostFtdcInstrumentField;
-import ctp.thosttraderapi.CThostFtdcInvestorPositionDetailField;
-import ctp.thosttraderapi.CThostFtdcOrderActionField;
-import ctp.thosttraderapi.CThostFtdcOrderField;
-import ctp.thosttraderapi.CThostFtdcQryInstrumentCommissionRateField;
-import ctp.thosttraderapi.CThostFtdcQryInvestorPositionDetailField;
-import ctp.thosttraderapi.CThostFtdcQrySettlementInfoConfirmField;
-import ctp.thosttraderapi.CThostFtdcQrySettlementInfoField;
-import ctp.thosttraderapi.CThostFtdcQryTradeField;
-import ctp.thosttraderapi.CThostFtdcQryTradingAccountField;
-import ctp.thosttraderapi.CThostFtdcReqAuthenticateField;
-import ctp.thosttraderapi.CThostFtdcReqUserLoginField;
-import ctp.thosttraderapi.CThostFtdcRspAuthenticateField;
-import ctp.thosttraderapi.CThostFtdcRspInfoField;
-import ctp.thosttraderapi.CThostFtdcRspUserLoginField;
-import ctp.thosttraderapi.CThostFtdcSettlementInfoConfirmField;
-import ctp.thosttraderapi.CThostFtdcSettlementInfoField;
-import ctp.thosttraderapi.CThostFtdcTradeField;
-import ctp.thosttraderapi.CThostFtdcTraderApi;
-import ctp.thosttraderapi.CThostFtdcTraderSpi;
-import ctp.thosttraderapi.CThostFtdcTradingAccountField;
-import ctp.thosttraderapi.CThostFtdcUserLogoutField;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletContextListener;
@@ -55,23 +30,23 @@ import javax.servlet.ServletContextListener;
  * @since : 7/26/21 9:20 PM
  **/
 @Slf4j
-public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContextListener {
+public class TraderSpiImpl implements ServletContextListener {
 
-	private UserInfoVO ctpUserInfo;
+	/*private UserInfoVO ctpUserInfo;
 	private CThostFtdcTraderApi traderApi;
 
 	private Integer requestId = 0;
 
 	private Gson GSON = new Gson();
 
-	/*@Autowired
+	*//*@Autowired
 	private CTPMsgHandlerThreadPool ctpMsgHandlerThreadPool;
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContextEvent.getServletContext());
 		ctpMsgHandlerThreadPool = webApplicationContext.getBean(CTPMsgHandlerThreadPool.class);
-	}*/
+	}*//*
 
 	public TraderSpiImpl(CThostFtdcTraderApi traderapi, UserInfoVO ctpUserInfo) {
 		this.traderApi =  traderapi;
@@ -120,7 +95,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		TradeTcpServerFactory.setCTPWorking(true);
 	}
 
-	/**
+	*//**
 	 * 登出请求响应，当执行ReqUserLogout后，该方法被调用。
 	 *
 	 * @param pUserLogout
@@ -130,14 +105,14 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 11:24:00.
-	 */
+	 *//*
 	@Override
 	public void OnRspUserLogout(CThostFtdcUserLogoutField pUserLogout, CThostFtdcRspInfoField pRspInfo, int nRequestID, boolean bIsLast) {
 		log.info("OnRspUserLogout nReason [{}] [{}]\n", pRspInfo.getErrorID(), pRspInfo.getErrorMsg());
 		traderApi.Release();
 	}
 
-	/**
+	*//**
 	 * 请求查询合约响应，当执行ReqQryInstrument后，该方法被调用。
 	 *
 	 * @param pInstrument
@@ -147,7 +122,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 11:23:26.
-	 */
+	 *//*
 	@Override
 	public void OnRspQryInstrument(CThostFtdcInstrumentField pInstrument, CThostFtdcRspInfoField pRspInfo, int nRequestID, boolean bIsLast) {
 		if (pRspInfo != null && pRspInfo.getErrorID() != 0) {
@@ -156,7 +131,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		}
 	}
 
-	/**
+	*//**
 	 * 请求查询投资者结算结果响应，当执行ReqQrySettlementInfo后，该方法被调用。
 	 *
 	 * @param var1
@@ -166,7 +141,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 11:20:36.
-	 */
+	 *//*
 	@Override
 	public void OnRspQrySettlementInfo(CThostFtdcSettlementInfoField var1, CThostFtdcRspInfoField var2, int nRequestID, boolean bIsLast) {
 		MsgHandlerTask ctpMsgHandlerTask = new MsgHandlerTask();
@@ -192,7 +167,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
 	}
 
-	/**
+	*//**
 	 * 针对用户请求的出错通知。
 	 *
 	 * @param var1
@@ -201,7 +176,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 11:13:44.
-	 */
+	 *//*
 	@Override
 	public void OnRspError(CThostFtdcRspInfoField var1, int nRequestID, boolean bIsLast) {
 		MsgHandlerTask ctpMsgHandlerTask = new MsgHandlerTask();
@@ -217,7 +192,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
 	}
 
-	/**
+	*//**
 	 * 投资者结算结果确认响应，当执行ReqSettlementInfoConfirm后，该方法被调用
 	 *
 	 * @param var1
@@ -227,7 +202,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 10:53:49.
-	 */
+	 *//*
 	@Override
 	public void OnRspSettlementInfoConfirm(
 			CThostFtdcSettlementInfoConfirmField var1, CThostFtdcRspInfoField var2,
@@ -255,7 +230,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
 	}
 
-	/**
+	*//**
 	 * 报单操作错误回报，当执行ReqOrderAction后有字段填写不对之类的CTP报错则通过此接口返回
 	 *
 	 * @param var1
@@ -263,7 +238,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 10:55:40.
-	 */
+	 *//*
 	@Override
 	public void OnErrRtnOrderAction(
 			CThostFtdcOrderActionField var1, CThostFtdcRspInfoField var2) {
@@ -298,7 +273,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
 	}
 
-	/**
+	*//**
 	 * 报单操作请求响应，当执行ReqOrderAction后有字段填写不对之类的CTP报错则通过此接口返回
 	 *
 	 * @param var1
@@ -308,7 +283,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 10:56:47.
-	 */
+	 *//*
 	@Override
 	public void OnRspOrderAction(
 			CThostFtdcInputOrderActionField var1, CThostFtdcRspInfoField var2,
@@ -346,7 +321,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
 	}
 
-	/**
+	*//**
 	 * 报单录入错误回报，当执行ReqOrderInsert后有字段填写不对之类的CTP报错则通过此接口返回
 	 *
 	 * @param var1
@@ -354,7 +329,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 10:57:14.
-	 */
+	 *//*
 	@Override
 	public void OnErrRtnOrderInsert(
 			CThostFtdcInputOrderField var1, CThostFtdcRspInfoField var2) {
@@ -402,7 +377,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
 	}
 
-	/**
+	*//**
 	 * 报单录入请求响应，当执行ReqOrderInsert后有字段填写不对之类的CTP报错则通过此接口返回
 	 *
 	 * @param var1
@@ -412,7 +387,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 10:57:54.
-	 */
+	 *//*
 	@Override
 	public void OnRspOrderInsert(
 			CThostFtdcInputOrderField var1, CThostFtdcRspInfoField var2,
@@ -461,7 +436,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		//				inputOrderRespVO, respInfoVO, requestId, isLast));
 	}
 
-	/**
+	*//**
 	 * 请求查询资金账户响应，当执行ReqQryTradingAccount后，该方法被调用。
 	 *
 	 * @param var1
@@ -471,7 +446,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 11:00:46.
-	 */
+	 *//*
 	@Override
 	public void OnRspQryTradingAccount(
 			CThostFtdcTradingAccountField var1, CThostFtdcRspInfoField var2,
@@ -541,7 +516,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
 	}
 
-	/**
+	*//**
 	 * 请求查询合约手续费率响应，当执行ReqQryInstrumentCommissionRate后，该方法被调用。
 	 *
 	 * @param var1
@@ -551,7 +526,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 11:01:13.
-	 */
+	 *//*
 	@Override
 	public void OnRspQryInstrumentCommissionRate(
 			CThostFtdcInstrumentCommissionRateField var1, CThostFtdcRspInfoField var2,
@@ -585,14 +560,14 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
 	}
 
-	/**
+	*//**
 	 * 报单通知，当执行ReqOrderInsert后并且报出后，收到返回则调用此接口，私有流回报。
 	 *
 	 * @param pRtnOrder
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 11:01:44.
-	 */
+	 *//*
 	@Override
 	public void OnRtnOrder(CThostFtdcOrderField pRtnOrder) {
 		MsgHandlerTask ctpMsgHandlerTask = new MsgHandlerTask();
@@ -669,14 +644,14 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPOnFuncMsgHandleEnum.RTN_ORDER.postHandle(rtnOrderRespVO);
 	}
 
-	/**
+	*//**
 	 * 成交通知，报单发出后有成交则通过此接口返回。私有流
 	 *
 	 * @param pRtnTrade
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 11:03:27.
-	 */
+	 *//*
 	@Override
 	public void OnRtnTrade(CThostFtdcTradeField pRtnTrade) {
 		MsgHandlerTask ctpMsgHandlerTask = new MsgHandlerTask();
@@ -721,7 +696,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPOnFuncMsgHandleEnum.RTN_ORDER.postHandle(rtnTradeRespVO);
 	}
 
-	/**
+	*//**
 	 * 请求查询投资者持仓明细响应，当执行ReqQryInvestorPositionDetail后，该方法被调用。
 	 *
 	 * @param var1
@@ -731,7 +706,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2023/12/29 11:04:00.
-	 */
+	 *//*
 	@Override
 	public void OnRspQryInvestorPositionDetail(
 			CThostFtdcInvestorPositionDetailField var1, CThostFtdcRspInfoField var2,
@@ -780,7 +755,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		CTPMsgHandlerThreadPool.execute(ctpMsgHandlerTask);
 	}
 
-	/**
+	*//**
 	 * 请求查询结算信息确认响应，当执行ReqQrySettlementInfoConfirm后，该方法被调用。
 	 *
 	 * @param var1
@@ -792,7 +767,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2024/01/30 10:27:13.
-	 */
+	 *//*
 	@Override
 	public void OnRspQrySettlementInfoConfirm(
 			CThostFtdcSettlementInfoConfirmField var1, CThostFtdcRspInfoField var2,
@@ -885,7 +860,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		}
 	}
 
-	/**
+	*//**
 	 * 报单录入请求，录入错误时对应响应OnRspOrderInsert、OnErrRtnOrderInsert，正确时对应回报OnRtnOrder、OnRtnTrade。
 	 * 可以录入限价单、市价单、条件单等交易所支持的指令，撤单时使用ReqOrderAction。
 	 * 不支持预埋单录入，预埋单请使用ReqParkedOrderInsert。
@@ -896,12 +871,12 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2024/01/04 10:58:01.
-	 */
+	 *//*
 	public int ReqInsertOrder(CThostFtdcInputOrderField cThostFtdcInputOrderField) {
 		return traderApi.ReqOrderInsert(cThostFtdcInputOrderField, getRequestId());
 	}
 
-	/**
+	*//**
 	 * 报单操作请求
 	 * 错误响应: OnRspOrderAction，OnErrRtnOrderAction
 	 * 正确响应：OnRtnOrder
@@ -912,12 +887,12 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2024/01/04 11:07:38.
-	 */
+	 *//*
 	public int ReqOrderAction(CThostFtdcInputOrderActionField cThostFtdcInputOrderActionField) {
 		return traderApi.ReqOrderAction(cThostFtdcInputOrderActionField, getRequestId());
 	}
 
-	/**
+	*//**
 	 * 投资者结算结果确认，在开始每日交易前都需要先确认上一日结算单，只需要确认一次。对应响应OnRspSettlementInfoConfirm。
 	 *
 	 * @param cThostFtdcSettlementInfoConfirmField
@@ -926,12 +901,12 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2024/01/04 11:10:11.
-	 */
+	 *//*
 	public int ReqSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField cThostFtdcSettlementInfoConfirmField) {
 		return traderApi.ReqSettlementInfoConfirm(cThostFtdcSettlementInfoConfirmField, getRequestId());
 	}
 
-	/**
+	*//**
 	 * 请求查询资金账户
 	 *
 	 * @param cThostFtdcQryTradingAccountField
@@ -940,7 +915,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2024/01/04 11:13:36.
-	 */
+	 *//*
 	public int ReqQryTradingAccount(CThostFtdcQryTradingAccountField cThostFtdcQryTradingAccountField) {
 		return traderApi.ReqQryTradingAccount(cThostFtdcQryTradingAccountField, getRequestId());
 	}
@@ -954,7 +929,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		return traderApi.ReqQrySettlementInfo(cThostFtdcQrySettlementInfoField, getRequestId());
 	}
 
-	/**
+	*//**
 	 * 请求查询合约手续费率，对应响应OnRspQryInstrumentCommissionRate。如果InstrumentID填空，则返回持仓对应的合约手续费率。
 	 *
 	 * @param cThostFtdcQryInstrumentCommissionRateField
@@ -963,7 +938,7 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 	 *
 	 * @author: JasonHan (hanzhe.jason@gmail.com).
 	 * 2024/01/04 11:15:15.
-	 */
+	 *//*
 	public int ReqQryInstrumentCommissionRate(CThostFtdcQryInstrumentCommissionRateField cThostFtdcQryInstrumentCommissionRateField) {
 		return traderApi.ReqQryInstrumentCommissionRate(cThostFtdcQryInstrumentCommissionRateField, getRequestId());
 	}
@@ -980,6 +955,6 @@ public class TraderSpiImpl extends CThostFtdcTraderSpi implements ServletContext
 		synchronized (requestId) {
 			return requestId++;
 		}
-	}
+	}*/
 
 }

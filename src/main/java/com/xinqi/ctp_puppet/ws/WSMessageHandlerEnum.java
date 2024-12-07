@@ -14,7 +14,7 @@ public enum WSMessageHandlerEnum {
 	ACHIEVE_FUTUREACCOUNTINFO {
 		@Override
 		public void abstractHandle(WSClient wss, String message) {
-			wss.achieveFutureAccountInfo(message);
+			//wss.achieveFutureAccountInfo(message);
 		}
 	},
 	REGISTERED {

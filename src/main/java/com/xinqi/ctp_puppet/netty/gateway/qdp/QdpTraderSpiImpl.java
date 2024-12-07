@@ -18,23 +18,6 @@ import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.QryTradingAccountRespVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.RespInfoVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.RtnOrderRespVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.RtnTradeRespVO;
-import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.SettlementInfoConfirmRespVO;
-import ctp.thosttraderapi.CThostFtdcInputOrderActionField;
-import ctp.thosttraderapi.CThostFtdcInputOrderField;
-import ctp.thosttraderapi.CThostFtdcInstrumentCommissionRateField;
-import ctp.thosttraderapi.CThostFtdcInvestorPositionDetailField;
-import ctp.thosttraderapi.CThostFtdcOrderActionField;
-import ctp.thosttraderapi.CThostFtdcOrderField;
-import ctp.thosttraderapi.CThostFtdcQryInstrumentCommissionRateField;
-import ctp.thosttraderapi.CThostFtdcQryInvestorPositionDetailField;
-import ctp.thosttraderapi.CThostFtdcQrySettlementInfoConfirmField;
-import ctp.thosttraderapi.CThostFtdcQrySettlementInfoField;
-import ctp.thosttraderapi.CThostFtdcQryTradeField;
-import ctp.thosttraderapi.CThostFtdcQryTradingAccountField;
-import ctp.thosttraderapi.CThostFtdcRspInfoField;
-import ctp.thosttraderapi.CThostFtdcSettlementInfoConfirmField;
-import ctp.thosttraderapi.CThostFtdcTradeField;
-import ctp.thosttraderapi.CThostFtdcTradingAccountField;
 import lombok.extern.slf4j.Slf4j;
 import qdp.qdptraderapi.CQdpFtdcAuthenticateField;
 import qdp.qdptraderapi.CQdpFtdcInputOrderField;
@@ -70,7 +53,7 @@ public class QdpTraderSpiImpl extends CQdpFtdcTraderSpi implements ServletContex
 	private UserInfoVO qdpUserInfo;
 	private CQdpFtdcTraderApi traderApi;
 
-	private Integer requestId = 0;
+	private Integer requestId = 1;
 
 	private Gson GSON = new Gson();
 
@@ -87,6 +70,7 @@ public class QdpTraderSpiImpl extends CQdpFtdcTraderSpi implements ServletContex
 		field.setUserID(qdpUserInfo.getUserId());
 		field.setAppID(qdpUserInfo.getAppId());
 		field.setAuthCode(qdpUserInfo.getAuthCode());
+		log.info(GSON.toJson(qdpUserInfo));
 		traderApi.ReqAuthenticate(field, getRequestId());
 		log.info("Send ReqAuthenticate ok");
 	}
@@ -104,17 +88,21 @@ public class QdpTraderSpiImpl extends CQdpFtdcTraderSpi implements ServletContex
 			return;
 		}
 		log.info("OnRspAuthenticate success!!!");
+		log.info("{}, {}, {}, {}", pRspInfo.getErrorID(), pRspInfo.getErrorMsg(), nRequestID, bIsLast);
 		CQdpFtdcReqUserLoginField field = new CQdpFtdcReqUserLoginField();
 		field.setBrokerID(qdpUserInfo.getBrokerId());
 		field.setUserID(qdpUserInfo.getUserId());
 		field.setPassword(qdpUserInfo.getPassword());
-		traderApi.ReqUserLogin(field, getRequestId());
-		log.info("Send login ok");
+		field.setInterfaceProductInfo("qwertyuiopqwertyuiopqwertyuiopqwertyuiopa");
+		field.setProtocolInfo("qwertyuiopqwertyuiopqwertyuiopqwertyuiopa");
+		int code = traderApi.ReqUserLogin(field, getRequestId());
+		log.info("Send login ok, {}", code);
 	}
 
 	@Override
 	public void OnRspUserLogin(CQdpFtdcRspUserLoginField pRspUserLogin, CQdpFtdcRspInfoField pRspInfo,
 							   int nRequestID, boolean bIsLast) {
+		log.info("this is OnRspUserLogin");
 		if (pRspInfo != null && pRspInfo.getErrorID() != 0) {
 			log.info("Login ErrorID[{}] ErrMsg[{}]\n", pRspInfo.getErrorID(), pRspInfo.getErrorMsg());
 			return;
@@ -211,6 +199,7 @@ public class QdpTraderSpiImpl extends CQdpFtdcTraderSpi implements ServletContex
 	 */
 	@Override
 	public void OnRspError(CQdpFtdcRspInfoField var1, int nRequestID, boolean bIsLast) {
+		log.info("this is OnRspError");
 		MsgHandlerTask ctpMsgHandlerTask = new MsgHandlerTask();
 		ErrorRespVO errorRespVO = new ErrorRespVO();
 		if (null != var1) {

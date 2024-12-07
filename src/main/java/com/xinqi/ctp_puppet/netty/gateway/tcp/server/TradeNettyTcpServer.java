@@ -1,11 +1,11 @@
 package com.xinqi.ctp_puppet.netty.gateway.tcp.server;
 
 
+import com.google.gson.Gson;
 import com.xinqi.ctp_puppet.common.UserInfoVO;
 import com.xinqi.ctp_puppet.netty.gateway.qdp.QdpTraderSpiImpl;
 import com.xinqi.ctp_puppet.netty.quot.VTPQuotServerNettyDescoder;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.ServerChannelHandler;
-import com.xinqi.ctp_puppet.netty.gateway.tcp.TraderSpiImpl;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.InputOrderActionReqVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.InputOrderReqVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.QryInstrumentCommissionRateReqVO;
@@ -15,17 +15,6 @@ import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.QrySettlementInfoReqVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.QryTradeReqVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.QryTradingAccountReqVO;
 import com.xinqi.ctp_puppet.netty.gateway.tcp.vo.SettlementInfoConfirmReqVO;
-import ctp.thosttraderapi.CThostFtdcInputOrderActionField;
-import ctp.thosttraderapi.CThostFtdcInputOrderField;
-import ctp.thosttraderapi.CThostFtdcQryInstrumentCommissionRateField;
-import ctp.thosttraderapi.CThostFtdcQryInvestorPositionDetailField;
-import ctp.thosttraderapi.CThostFtdcQrySettlementInfoConfirmField;
-import ctp.thosttraderapi.CThostFtdcQrySettlementInfoField;
-import ctp.thosttraderapi.CThostFtdcQryTradeField;
-import ctp.thosttraderapi.CThostFtdcQryTradingAccountField;
-import ctp.thosttraderapi.CThostFtdcSettlementInfoConfirmField;
-import ctp.thosttraderapi.CThostFtdcTraderApi;
-import ctp.thosttraderapi.THOST_TE_RESUME_TYPE;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -59,10 +48,10 @@ public class TradeNettyTcpServer {
 	private final static Integer PORT_PUPPET = 8099;
 
 	static {
-		System.loadLibrary("thosttraderapi_se");
-		System.loadLibrary("thosttraderapi_wrap");
-		System.loadLibrary("libqdptraderapi_se");
-		System.loadLibrary("libqdptraderapi_wrap");
+		//System.loadLibrary("thosttraderapi_se");
+		//System.loadLibrary("thosttraderapi_wrap");
+		System.loadLibrary("qdptraderapi");
+		System.loadLibrary("qdptraderapi_wrap");
 	}
 
 	private EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -153,15 +142,23 @@ public class TradeNettyTcpServer {
 					traderApi.SubscribePrivateTopic(THOST_TE_RESUME_TYPE.THOST_TERT_RESTART);
 					traderApi.Init();
 					traderApi.Join();*/
+					log.info("1");
 					CQdpFtdcTraderApi traderApi = CQdpFtdcTraderApi.CreateFtdcTraderApi();
+					log.info("2");
 					traderSpi = new QdpTraderSpiImpl(traderApi, ctpUserInfo);
-
+					log.info("3");
 					traderApi.RegisterSpi(traderSpi);
-					traderApi.RegisterFront(ctpUserInfo.getTradeAddress());
+					log.info("4");
+					traderApi.RegisterFront(ctpUserInfo.getCtpTradeAddress());
+					log.info("5");
 					traderApi.SubscribePublicTopic(QDP_TE_RESUME_TYPE.QDP_TERT_RESTART);
+					log.info("6");
 					traderApi.SubscribePrivateTopic(QDP_TE_RESUME_TYPE.QDP_TERT_RESTART);
+					log.info("7");
 					traderApi.Init();
+					log.info("8");
 					traderApi.Join();
+					log.info("9");
 				} catch (Exception e) {
 					log.error("创建CTP链接失败", e);
 				}

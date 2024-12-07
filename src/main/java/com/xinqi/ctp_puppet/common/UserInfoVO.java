@@ -14,7 +14,7 @@ public class UserInfoVO {
 
 	private static Gson GSON = new Gson();
 
-	private String tradeAddress;
+	private String ctpTradeAddress;
 	private String brokerId;
 	private String userId;
 	private String investorId;
@@ -28,15 +28,19 @@ public class UserInfoVO {
 			String ctpTradeAddress, String brokerId,
 			String userId, String password,
 			String appId, String authCode) {
-		this.tradeAddress = ctpTradeAddress;
+		this.ctpTradeAddress = ctpTradeAddress;
 		this.brokerId = brokerId;
 		this.userId = userId;
-		this.investorId = brokerId + userId;
+		this.investorId = userId;
 		this.password = password;
 		this.accountId = userId;
 		this.currencyId = "CNY";
 		this.appId = appId;
 		this.authCode = authCode;
+	}
+
+	public String getInvestorId() {
+		return brokerId + userId;
 	}
 
 	@Override

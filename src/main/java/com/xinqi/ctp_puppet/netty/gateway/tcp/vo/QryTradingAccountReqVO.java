@@ -3,12 +3,14 @@ package com.xinqi.ctp_puppet.netty.gateway.tcp.vo;
 
 import com.xinqi.ctp_puppet.common.DecodeUtils;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Description : TODO
  * @author : JasonHan hanzhe.jason@gmail.com
  * @since : 2024/1/23 09:34
  **/
+@Setter
 @Getter
 public class QryTradingAccountReqVO extends CTPReqVOBase {
 
