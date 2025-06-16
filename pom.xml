@@ -57,13 +57,22 @@
         </dependency>
 
         <!-- 调用CTP -->
-        <!--<dependency>
+        <dependency>
             <groupId>ctp</groupId>
             <artifactId>thosttraderapi</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/resources/lib/ctp.thosttraderapi.0.0.1/thosttraderapi0.0.1.jar</systemPath>
-        </dependency>-->
+        </dependency>
+
+        <!-- 调用CTPMINI -->
+        <dependency>
+            <groupId>ctpmini</groupId>
+            <artifactId>thosttraderapi</artifactId>
+            <version>0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/ctpmini.thosttraderapi.0.0.1/ctpminithosttraderapi.jar</systemPath>
+        </dependency>
 
         <!-- 调用QDP -->
         <dependency>
