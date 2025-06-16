@@ -38,8 +38,24 @@ public class CTPTradeProxy extends TradeProxyBase {
 
 	private CTPTradeSpiImpl traderSpi;
 
+<<<<<<< HEAD:src/main/java/com/xinqi/puppet/netty/gateway/tcp/server/proxy/trader/CTPTradeProxy.java
 	public CTPTradeProxy(UserInfoVO userInfoVO) {
 		super(userInfoVO);
+=======
+	private TraderSpiImpl traderSpi;
+
+	private int port;
+
+	/**
+	 * 与服务端建立连接后得到的通道对象
+	 */
+	private Channel channel;
+
+	private long encryptKey;
+
+	protected TradeNettyTcpServer() {
+		port = PORT_PUPPET;
+>>>>>>> parent of 341f16f (使用CTP默认OrderRef时会导致报条件单时RtnOrder第一次回调中OrderRef为空值。所以现改为报单时自动填充OrderRef。OrderRef在每次重新登录CTP时重置。):src/main/java/com/xinqi/ctp_puppet/netty/tcp/server/TradeNettyTcpServer.java
 	}
 
 	@Override
@@ -54,8 +70,104 @@ public class CTPTradeProxy extends TradeProxyBase {
 		traderApi.Join();
 	}
 
+<<<<<<< HEAD:src/main/java/com/xinqi/puppet/netty/gateway/tcp/server/proxy/trader/CTPTradeProxy.java
 	@Override
 	public int reqInsertOrder(InputOrderReqVO inputOrderReqVO) {
+=======
+	protected void start(CTPUserInfoVO faVO) {
+		startCTP(faVO);
+
+		ServerBootstrap bootstrap = new ServerBootstrap();
+		bootstrap.group(bossGroup, workerGroup)
+				.channel(NioServerSocketChannel.class)
+				//.childHandler(new CTPPuppetChannelInitializer())
+				.childHandler(new ChannelInitializer<SocketChannel>() {
+					@Override
+					public void initChannel(SocketChannel ch) throws Exception {
+						//ch.pipeline().addLast(new ShowChannelHandler());
+						ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(
+								ByteOrder.LITTLE_ENDIAN, Integer.MAX_VALUE,
+								0, 4,
+								-4, 4, true));
+						ch.pipeline().addLast("decoder", new VTPQuotServerNettyDescoder());
+						ch.pipeline().addLast(new ServerChannelHandler());
+					}
+				})
+				// 用于设置TCP连接的最大排队数
+				.option(ChannelOption.SO_BACKLOG, 128)
+				// 启用心跳保活机制
+				.childOption(ChannelOption.SO_KEEPALIVE, true);
+
+		try {
+			ChannelFuture channelFuture = bootstrap.bind(port).sync();
+			log.info("CTP中转服务启动成功，端口号为" + port);
+			if ((null != channelFuture) && (channelFuture.isSuccess())) {
+				channel = channelFuture.channel();
+			}
+		} catch (Exception e) {
+			log.error("CTP中转服务启动失败，端口号为" + port, e);
+		}
+
+		encryptKey = initEncryptKey();
+		log.info("加密字符为{}", encryptKey);
+
+		TradeTcpServerFactory.notifyTcpServerInfo(
+				String.valueOf(this.encryptKey), String.valueOf(this.port));
+	}
+	private void startCTP(CTPUserInfoVO ctpUserInfo) {
+		log.info("调用CTP");
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					CThostFtdcTraderApi traderApi = CThostFtdcTraderApi.CreateFtdcTraderApi();
+					traderSpi = new TraderSpiImpl(traderApi, ctpUserInfo);
+
+					traderApi.RegisterSpi(traderSpi);
+					traderApi.RegisterFront(ctpUserInfo.getCtpTradeAddress());
+					traderApi.SubscribePublicTopic(THOST_TE_RESUME_TYPE.THOST_TERT_RESTART);
+					traderApi.SubscribePrivateTopic(THOST_TE_RESUME_TYPE.THOST_TERT_RESTART);
+					traderApi.Init();
+					traderApi.Join();
+				} catch (Exception e) {
+					log.error("创建CTP链接失败", e);
+				}
+			}
+		}).start();
+	}
+
+	/**
+	 * 获取加密Key
+	 *
+	 * @param
+	 *
+	 * @return int
+	 *
+	 * @author: JasonHan (hanzhe.jason@gmail.com).
+	 * 2024/01/05 11:04:33.
+	 */
+	public long initEncryptKey() {
+		Double d = Math.pow(2, 8 * 7) * Math.random();
+		return d.longValue();
+	}
+	public boolean checkoutEncryptKey(long key) {
+		return encryptKey == key;
+	}
+
+	/**
+	 * 报单录入请求，录入错误时对应响应OnRspOrderInsert、OnErrRtnOrderInsert，正确时对应回报OnRtnOrder、OnRtnTrade。
+	 * 可以录入限价单、市价单、条件单等交易所支持的指令，撤单时使用ReqOrderAction。
+	 * 不支持预埋单录入，预埋单请使用ReqParkedOrderInsert。
+	 *
+	 * @param inputOrderReqVO
+	 *
+	 * @return int 0，代表成功；-1，表示网络连接失败；-2，表示未处理请求超过许可数；-3，表示每秒发送请求数超过许可数。
+	 *
+	 * @author: JasonHan (hanzhe.jason@gmail.com).
+	 * 2024/01/04 10:58:01.
+	 */
+	public int insertOrder(InputOrderReqVO inputOrderReqVO) {
+>>>>>>> parent of 341f16f (使用CTP默认OrderRef时会导致报条件单时RtnOrder第一次回调中OrderRef为空值。所以现改为报单时自动填充OrderRef。OrderRef在每次重新登录CTP时重置。):src/main/java/com/xinqi/ctp_puppet/netty/tcp/server/TradeNettyTcpServer.java
 		CThostFtdcInputOrderField cThostFtdcInputOrderField = new CThostFtdcInputOrderField();
 		cThostFtdcInputOrderField.setBrokerID(inputOrderReqVO.getBrokerID());
 		cThostFtdcInputOrderField.setInvestorID(inputOrderReqVO.getInvestorID());

@@ -1,8 +1,13 @@
 package com.xinqi.puppet.netty.gateway.tcp.vo;
 
 
+<<<<<<< HEAD:src/main/java/com/xinqi/puppet/netty/gateway/tcp/vo/InputOrderReqVO.java
 import com.xinqi.puppet.common.DecodeUtils;
 import com.xinqi.puppet.netty.gateway.tcp.server.TradeNettyTcpServer;
+=======
+import com.xinqi.ctp_puppet.common.DecodeUtils;
+import io.netty.buffer.ByteBuf;
+>>>>>>> parent of 341f16f (使用CTP默认OrderRef时会导致报条件单时RtnOrder第一次回调中OrderRef为空值。所以现改为报单时自动填充OrderRef。OrderRef在每次重新登录CTP时重置。):src/main/java/com/xinqi/ctp_puppet/netty/tcp/vo/InputOrderReqVO.java
 import lombok.Getter;
 
 /**
@@ -160,7 +165,6 @@ public class InputOrderReqVO extends CTPReqVOBase {
 			byteArr[i] = source[offset + i];
 		}
 		//this.orderRef = DecodeUtils.getCString(byteArr);
-		this.orderRef = Integer.toString(TradeNettyTcpServer.getOrderRef());
 		offset += byteArr.length;
 		byteArr = new byte[16];
 		for (int i = 0; i < byteArr.length; i++) {
