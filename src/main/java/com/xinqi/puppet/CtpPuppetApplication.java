@@ -27,7 +27,10 @@ import java.util.List;
 public class CtpPuppetApplication {
 
 	public static void main(String[] args) throws IOException, DeploymentException {
-		int port = 18089;
+		String libraryPath = System.getProperty("java.library.path");
+		log.info("Java Library Path: " + libraryPath);
+
+		int port = 8089;
 		SpringApplication app = new SpringApplication(CtpPuppetApplication.class);
 		app.setDefaultProperties(Collections
 				.singletonMap("server.port", port));
@@ -37,13 +40,11 @@ public class CtpPuppetApplication {
 		// 打印硬件信息
 		getLocalHostInfo();
 
-		//String libraryPath = System.getProperty("java.library.path");
-		//log.info("Java Library Path: " + libraryPath);
-
 		TradeTcpServerFactory.initTradeTcpServer();
 
 		InetAddress localHost = InetAddress.getLocalHost();
 		TradeTcpServerFactory.initWSClient(localHost.getHostName());
+		//TradeTcpServerFactory.initWSClient("39ed48a645c6");
 		log.info("创建ws客户端");
 
 		//TODO JasonHan 触发qdp连接
