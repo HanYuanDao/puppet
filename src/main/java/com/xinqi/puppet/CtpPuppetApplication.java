@@ -44,7 +44,7 @@ public class CtpPuppetApplication {
 
 		InetAddress localHost = InetAddress.getLocalHost();
 		TradeTcpServerFactory.initWSClient(localHost.getHostName());
-		//TradeTcpServerFactory.initWSClient("39ed48a645c6");
+		/*TradeTcpServerFactory.initWSClient("39ed48a645c6");*/
 		log.info("创建ws客户端");
 
 		//TODO JasonHan 触发qdp连接

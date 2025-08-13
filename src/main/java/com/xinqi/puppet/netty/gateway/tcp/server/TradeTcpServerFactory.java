@@ -152,7 +152,8 @@ public class TradeTcpServerFactory {
 		tradeNettyTcpServer.confirmSettlementInfo(settlementInfoConfirmReqVO);
 	}
 	public static void handler(QryTradingAccountReqVO qryTradingAccountReqVO) {
-		log.info("查询期货账号信息 {}", tradeNettyTcpServer.qryTradingAccount(qryTradingAccountReqVO));
+		//log.info("查询期货账号信息 {}", tradeNettyTcpServer.qryTradingAccount(qryTradingAccountReqVO));
+		tradeNettyTcpServer.qryTradingAccount(qryTradingAccountReqVO);
 	}
 	public static void handler(QrySettlementInfoConfirmReqVO qrySettlementInfoReqVO) {
 		tradeNettyTcpServer.qrySettlementInfoConfirm(qrySettlementInfoReqVO);

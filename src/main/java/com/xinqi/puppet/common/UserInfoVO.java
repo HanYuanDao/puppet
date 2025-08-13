@@ -14,9 +14,10 @@ public class UserInfoVO {
 
 	private static Gson GSON = new Gson();
 
-	private int tradeProxyCode;
-
-	private String tradeAddress;
+	// 为适应多个接口而进行的升级
+	//private int tradeProxyCode;
+	//private String tradeAddress;
+	private String ctpTradeAddress;
 	private String brokerId;
 	private String userId;
 	private String investorId;
@@ -26,11 +27,12 @@ public class UserInfoVO {
 	private String appId;
 	private String authCode;
 
-	public UserInfoVO(
+	/*public UserInfoVO(
 			int tradeProxyCode,
 			String tradeAddress, String brokerId,
 			String userId, String investorId, String password,
 			String appId, String authCode) {
+		// 为适应多个接口而进行的升级
 		this.tradeProxyCode = tradeProxyCode;
 		this.tradeAddress = tradeAddress;
 		this.brokerId = brokerId;
@@ -41,6 +43,25 @@ public class UserInfoVO {
 		this.currencyId = "CNY";
 		this.appId = appId;
 		this.authCode = authCode;
+	}*/
+	public UserInfoVO(
+			String ctpTradeAddress, String brokerId,
+			String userId, String password,
+			String appId, String authCode) {
+		this.ctpTradeAddress = ctpTradeAddress;
+		this.brokerId = brokerId;
+		this.userId = userId;
+		this.investorId = userId;
+		this.password = password;
+		this.accountId = userId;
+		this.currencyId = "CNY";
+		this.appId = appId;
+		this.authCode = authCode;
+	}
+
+
+	public String getTradeAddress() {
+		return ctpTradeAddress;
 	}
 
 	@Override

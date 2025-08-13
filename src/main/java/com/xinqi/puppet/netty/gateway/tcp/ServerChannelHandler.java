@@ -18,6 +18,7 @@ import com.xinqi.puppet.netty.gateway.tcp.vo.QryTradingAccountReqVO;
 import com.xinqi.puppet.netty.gateway.tcp.vo.SettlementInfoConfirmReqVO;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 
 	private static Gson GSON = new Gson();
+
+	private static ChannelId nowChannelId = null;
 
 	/**
 	 * 当channle被激活的回调（第次连接只发生一次）
@@ -44,10 +47,7 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		Channel channel = ctx.channel();
-		log.info("有客户端连接 channel ID is : {}", channel.id());
-		TradeTcpServerFactory.addClientChannel(channel);
-		this.notifyShookHand(channel);
-		TradeTcpServerFactory.notifyRtnHistory(channel);
+		log.info("有客户端连接 channel ID is : {} {}", channel.id(), channel.remoteAddress());
 	}
 
 	@Override
@@ -132,6 +132,15 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 			return;
 		}
 
+		//TODO JasonHan 这里要校验当前是否是个新链接；
+		Channel channel = ctx.channel();
+		if (nowChannelId == null || !(nowChannelId.equals(channel.id()))) {
+			nowChannelId = channel.id();
+			TradeTcpServerFactory.addClientChannel(channel);
+			this.notifyShookHand(channel);
+			TradeTcpServerFactory.notifyRtnHistory(channel);
+		}
+
 		final int byteMsgTypeLength = 4;
 		final int byteMsgTypeOffset = byteHeadLength;
 		byte[] byteMsgType = new byte[byteMsgTypeLength];
@@ -175,6 +184,9 @@ public class ServerChannelHandler extends ChannelInboundHandlerAdapter {
 
 	public void msgRoute(int msgType, byte[] msgPayload) {
 		switch (msgType) {
+			case 1:
+				log.info("空的消息");
+				break;
 			case 33:
 				InputOrderReqVO inputOrderReqVO = new InputOrderReqVO();
 				inputOrderReqVO.toJavaBean(msgPayload);

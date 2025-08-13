@@ -2,6 +2,7 @@ package com.xinqi.puppet.netty.gateway.tcp.server;
 
 
 import com.xinqi.puppet.common.UserInfoVO;
+import com.xinqi.puppet.netty.gateway.tcp.server.proxy.trader.CTPTradeProxy;
 import com.xinqi.puppet.netty.gateway.tcp.server.proxy.trader.TradeProxyBase;
 import com.xinqi.puppet.netty.gateway.tcp.server.proxy.trader.TradeProxyEnum;
 import com.xinqi.puppet.netty.quot.VTPQuotServerNettyDescoder;
@@ -27,6 +28,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Constructor;
 import java.nio.ByteOrder;
 
 /**
@@ -39,12 +41,14 @@ public class TradeNettyTcpServer {
 
 	private final static Integer PORT_PUPPET = 8099;
 
-	static {
-		//System.loadLibrary("thosttraderapi_se");
-		//System.loadLibrary("thosttraderapi_wrap");
+	/*static {
+		*//*System.loadLibrary("thosttraderapi_se");
+		System.loadLibrary("thosttraderapi_wrap");*//*
+		*//*System.loadLibrary("ctpminithosttraderapi");
+		System.loadLibrary("ctpminithosttraderapi_wrap");
 		System.loadLibrary("qdptraderapi");
-		System.loadLibrary("qdptraderapi_wrap");
-	}
+		System.loadLibrary("qdptraderapi_wrap");*//*
+	}*/
 
 	private TradeProxyBase tradeProxy;
 
@@ -84,7 +88,7 @@ public class TradeNettyTcpServer {
 		TradeTcpServerFactory.notifyTcpServerInfo(
 				String.valueOf(this.encryptKey), String.valueOf(this.port));
 
-		startCTP(faVO);
+		startTradeProxy(faVO);
 
 		ServerBootstrap bootstrap = new ServerBootstrap();
 		bootstrap.group(bossGroup, workerGroup)
@@ -117,8 +121,8 @@ public class TradeNettyTcpServer {
 			log.error("CTP中转服务启动失败，端口号为" + port, e);
 		}
 	}
-	private void startCTP(UserInfoVO ctpUserInfo) {
-		log.info("调用CTP");
+	private void startTradeProxy(UserInfoVO ctpUserInfo) {
+		log.info("调用交易代理");
 
 		initOrderRef();
 
@@ -126,12 +130,24 @@ public class TradeNettyTcpServer {
 			@Override
 			public void run() {
 				try {
-					TradeProxyEnum tradeProxyEnum = TradeProxyEnum.getByCode(ctpUserInfo.getTradeProxyCode());
+					/*TradeProxyEnum tradeProxyEnum = TradeProxyEnum.getByCode(1);
 					if (null == tradeProxyEnum) {
 						log.error("无效的交易代理编码 {}", ctpUserInfo.getTradeProxyCode());
+					} else {
+						log.info("交易代理商为{}", tradeProxyEnum.getNmCn());
 					}
-					tradeProxy = tradeProxyEnum.getImpl().newInstance();
+					Constructor<? extends TradeProxyBase> ctor
+							= tradeProxyEnum.getImpl().getDeclaredConstructor(UserInfoVO.class);
+					ctor.setAccessible(true);
+					tradeProxy = ctor.newInstance(ctpUserInfo);
+					tradeProxy.init();*/
+					System.loadLibrary("thosttraderapi_se");
+					log.info("加载完thosttraderapi_se");
+					System.loadLibrary("thosttraderapi_wrap");
+					log.info("加载完thosttraderapi_wrap");
+					tradeProxy = new CTPTradeProxy(ctpUserInfo);
 					tradeProxy.init();
+					log.info("交易代理初始化成功");
 				} catch (Exception e) {
 					log.error("创建CTP链接失败", e);
 				}

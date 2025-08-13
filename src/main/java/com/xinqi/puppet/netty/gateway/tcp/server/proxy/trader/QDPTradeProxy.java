@@ -59,7 +59,9 @@ public class QDPTradeProxy extends TradeProxyBase {
 		cThostFtdcInputOrderField.setBrokerID(inputOrderReqVO.getBrokerID());
 		cThostFtdcInputOrderField.setInvestorID(inputOrderReqVO.getInvestorID());
 		cThostFtdcInputOrderField.setInstrumentID(inputOrderReqVO.getInstrumentID());
-		cThostFtdcInputOrderField.setUserOrderLocalID(Integer.valueOf(inputOrderReqVO.getOrderRef()));
+		if (inputOrderReqVO.getOrderRef() != null) {
+			cThostFtdcInputOrderField.setUserOrderLocalID(Integer.valueOf(inputOrderReqVO.getOrderRef()));
+		}
 		cThostFtdcInputOrderField.setUserID(inputOrderReqVO.getUserID());
 		cThostFtdcInputOrderField.setOrderPriceType(inputOrderReqVO.getOrderPriceType());
 		cThostFtdcInputOrderField.setDirection(inputOrderReqVO.getDirection());

@@ -30,7 +30,7 @@ import ctpmini.thosttraderapi.THOST_TE_RESUME_TYPE;
 public class CTPMiniTradeProxy extends TradeProxyBase {
 
 	static {
-		System.loadLibrary("ctpminithosttraderapi_se");
+		System.loadLibrary("ctpminithosttraderapi");
 		System.loadLibrary("ctpminithosttraderapi_wrap");
 	}
 
